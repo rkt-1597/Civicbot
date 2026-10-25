@@ -24,8 +24,47 @@ import pandas as pd
 import streamlit as st
 
 import config
+import streamlit.components.v1 as components
 
-st.set_page_config(page_title="CivicBot - Cambridge", page_icon="🏛️", layout="wide")
+GITHUB_REPO_URL = "https://github.com/rkt-1597/Civicbot"
+
+st.set_page_config(
+    page_title="CivicBot - Cambridge",
+    page_icon="🏛️",
+    layout="wide",
+    menu_items={
+        "Get Help": GITHUB_REPO_URL,
+        "Report a bug": f"{GITHUB_REPO_URL}/issues",
+        "About": (
+            f"### CivicBot\n\n"
+            f"Municipal services guide built by crawling public council pages.\n\n"
+            f"**GitHub:** [{GITHUB_REPO_URL}]({GITHUB_REPO_URL})"
+        ),
+    },
+)
+
+# Attempt to dynamically patch the Streamlit Community Cloud header GitHub icon
+components.html(
+    f"""
+    <script>
+    function updateGithubLinks() {{
+        try {{
+            const doc = window.parent.document;
+            const links = doc.querySelectorAll('header a[href*="github.com"], a[href*="github.com"]');
+            links.forEach(function(el) {{
+                if (el.href !== "{GITHUB_REPO_URL}") {{
+                    el.href = "{GITHUB_REPO_URL}";
+                }}
+            }});
+        }} catch (e) {{}}
+    }}
+    setInterval(updateGithubLinks, 800);
+    updateGithubLinks();
+    </script>
+    """,
+    height=0,
+    width=0,
+)
 
 # Where each file lives in live mode; in snapshot mode the same file name is
 # read from data/snapshot/ instead.
@@ -116,6 +155,7 @@ LIVE_FILES["raw_text"] = config.SNAPSHOT / "raw_text.jsonl"   # only exists in t
 snapshot_exists = (config.SNAPSHOT / "pages_clean.jsonl").exists()
 st.sidebar.title("🏛️ CivicBot")
 st.sidebar.caption("Municipal services guide built by crawling public council pages.")
+st.sidebar.link_button("📂 GitHub Repository", GITHUB_REPO_URL, use_container_width=True)
 snapshot = st.sidebar.toggle("Demo snapshot mode", value=snapshot_exists,
                              help="Use the saved crawl in data/snapshot/ - no network or API key needed.",
                              disabled=not snapshot_exists)

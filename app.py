@@ -43,43 +43,50 @@ st.set_page_config(
     },
 )
 
-# Attempt to dynamically patch the Streamlit Community Cloud header GitHub icon
-components.html(
+# Hide native Streamlit Cloud GitHub icon (which points to blob/main/app.py) and render custom icon
+st.markdown(
     f"""
-    <script>
-    (function() {{
-        function patchLink(a) {{
-            if (a && a.href && a.href.includes("github.com") && a.href !== "{GITHUB_REPO_URL}") {{
-                a.href = "{GITHUB_REPO_URL}";
-                a.target = "_blank";
-            }}
-        }}
+    <style>
+    /* Hide native Streamlit Community Cloud GitHub icon */
+    #GithubIcon,
+    header a[href*="github.com"],
+    [data-testid="stToolbar"] a[href*="github.com"],
+    .viewerBadge_container__1QSob,
+    .styles_viewerBadge__1yB5_,
+    .viewerBadge_link__1S137 {{
+        display: none !important;
+    }}
 
-        function scanAndPatch() {{
-            try {{
-                const doc = window.parent.document || document;
-                const links = doc.querySelectorAll('header a[href*="github.com"], a[href*="github.com"]');
-                links.forEach(patchLink);
-            }} catch (e) {{}}
-        }}
+    .custom-github-badge {{
+        position: fixed;
+        top: 14px;
+        right: 48px;
+        z-index: 9999999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        color: #ffffff;
+        opacity: 0.85;
+        border-radius: 6px;
+        transition: opacity 0.2s, background-color 0.2s;
+        text-decoration: none;
+    }}
+    .custom-github-badge:hover {{
+        opacity: 1;
+        background-color: rgba(255, 255, 255, 0.15);
+        color: #ffffff;
+    }}
+    </style>
 
-        try {{
-            const doc = window.parent.document || document;
-            doc.addEventListener('click', function(e) {{
-                const a = e.target.closest('a[href*="github.com"]');
-                if (a) {{
-                    patchLink(a);
-                }}
-            }}, true);
-        }} catch (e) {{}}
-
-        setInterval(scanAndPatch, 300);
-        scanAndPatch();
-    }})();
-    </script>
+    <a href="{GITHUB_REPO_URL}" target="_blank" rel="noopener noreferrer" class="custom-github-badge" title="GitHub: rkt-1597/Civicbot">
+        <svg height="20" width="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"></path>
+        </svg>
+    </a>
     """,
-    height=0,
-    width=0,
+    unsafe_allow_html=True,
 )
 
 # Where each file lives in live mode; in snapshot mode the same file name is

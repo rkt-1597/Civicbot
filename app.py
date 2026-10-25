@@ -47,19 +47,35 @@ st.set_page_config(
 components.html(
     f"""
     <script>
-    function updateGithubLinks() {{
+    (function() {{
+        function patchLink(a) {{
+            if (a && a.href && a.href.includes("github.com") && a.href !== "{GITHUB_REPO_URL}") {{
+                a.href = "{GITHUB_REPO_URL}";
+                a.target = "_blank";
+            }}
+        }}
+
+        function scanAndPatch() {{
+            try {{
+                const doc = window.parent.document || document;
+                const links = doc.querySelectorAll('header a[href*="github.com"], a[href*="github.com"]');
+                links.forEach(patchLink);
+            }} catch (e) {{}}
+        }}
+
         try {{
-            const doc = window.parent.document;
-            const links = doc.querySelectorAll('header a[href*="github.com"], a[href*="github.com"]');
-            links.forEach(function(el) {{
-                if (el.href !== "{GITHUB_REPO_URL}") {{
-                    el.href = "{GITHUB_REPO_URL}";
+            const doc = window.parent.document || document;
+            doc.addEventListener('click', function(e) {{
+                const a = e.target.closest('a[href*="github.com"]');
+                if (a) {{
+                    patchLink(a);
                 }}
-            }});
+            }}, true);
         }} catch (e) {{}}
-    }}
-    setInterval(updateGithubLinks, 800);
-    updateGithubLinks();
+
+        setInterval(scanAndPatch, 300);
+        scanAndPatch();
+    }})();
     </script>
     """,
     height=0,

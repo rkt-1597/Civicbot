@@ -1,10 +1,10 @@
 # CivicBot — A Municipal Services Guide for Cambridge
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-Launch%20CivicBot-brightgreen)](https://civicbot-en3ja2lasup5stoqmztzqc.streamlit.app/)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Launch%20CivicBot-brightgreen)](https://civicbot-h4lj7cct3zy4gguejookek.streamlit.app/)
 
 **CivicBot** is a university web-mining mini project. It crawls two public council websites, cleans and extracts facts from service pages, analyses website structure and topics, and answers citizen questions about bins, council tax, licences, housing, fees, and phone numbers. Its retrieval-augmented chatbot answers only from crawled pages and links to the official source.
 
-**Live demo:** [CivicBot — Try the Application](https://civicbot-en3ja2lasup5stoqmztzqc.streamlit.app/)
+**Live demo:** [CivicBot — Try the Application](https://civicbot-h4lj7cct3zy4gguejookek.streamlit.app/)
 
 ## Target Websites
 
@@ -53,7 +53,7 @@ Streamlit Community Cloud
         │
         ▼
 Live CivicBot Application
-https://civicbot-en3ja2lasup5stoqmztzqc.streamlit.app/
+https://civicbot-h4lj7cct3zy4gguejookek.streamlit.app/
 ```
 
 The deployment uses the existing Streamlit application entry point, `app.py`, and the committed demo snapshot. Streamlit Community Cloud installs the dependencies specified in `requirements.txt` and runs the application in its hosted environment.
@@ -221,5 +221,5 @@ See [`docs/ethics.md`](docs/ethics.md) for `robots.txt` and terms-of-use checks 
 
 ## Demo
 
-- **[Launch CivicBot Live](https://civicbot-en3ja2lasup5stoqmztzqc.streamlit.app/)**
+- **[Launch CivicBot Live](https://civicbot-h4lj7cct3zy4gguejookek.streamlit.app/)**
 - See [`DEMO_SCRIPT.md`](DEMO_SCRIPT.md) for a five-minute walkthrough.
